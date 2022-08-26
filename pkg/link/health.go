@@ -2,6 +2,7 @@ package link
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 )
@@ -13,9 +14,10 @@ func CheckHealth(ctx context.Context, url string) error {
 	req = req.WithContext(ctx)
 
 	res, err := http.DefaultClient.Do(req)
-	if err != nil {
+	if err != nil && errors.Is(err, context.Canceled) {
 		return fmt.Errorf("checking link %s, got error %s", url, err)
-		// only check 404 for now
+	} else if errors.Is(err, context.Canceled) {
+		return fmt.Errorf("checking link %s, timeout", url)
 	} else if res.StatusCode == http.StatusNotFound {
 		return fmt.Errorf("checking link %s, got status code %d", url, res.StatusCode)
 	}
