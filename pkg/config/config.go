@@ -14,13 +14,13 @@ type Config struct {
 }
 
 func NewFromInputs(action *githubactions.Action) (*Config, error) {
-	timeoutStr := githubactions.GetInput("timeout")
+	timeoutStr := action.GetInput("timeout")
 	timeout, err := time.ParseDuration(timeoutStr)
 	if err != nil {
 		return nil, err
 	}
 
-	concRequestsStr := githubactions.GetInput("concurrentRequests")
+	concRequestsStr := action.GetInput("concurrentRequests")
 	concRequests, err := strconv.Atoi(concRequestsStr)
 	if err != nil {
 		return nil, err
