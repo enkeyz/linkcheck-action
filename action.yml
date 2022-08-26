@@ -10,7 +10,7 @@ inputs:
   timeout:
     description: 'Maximum time to wait for the webserver to answer, in seconds'
     required: false
-    default: '10'
+    default: '10s'
 
 runs:
   using: docker
