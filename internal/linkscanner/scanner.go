@@ -10,20 +10,17 @@ import (
 
 	"github.com/enkeyz/go-linkcheck/pkg/config"
 	"github.com/enkeyz/go-linkcheck/pkg/link"
-	"golang.org/x/sync/semaphore"
 )
 
 type LinkScanner struct {
-	timeout            time.Duration
-	concurrentRequests int
-	fileName           string
+	timeout  time.Duration
+	fileName string
 }
 
 func New(cfg *config.Config) *LinkScanner {
 	return &LinkScanner{
-		timeout:            cfg.ScannerTimeout,
-		concurrentRequests: cfg.ConcurrentRequests,
-		fileName:           cfg.FileName,
+		timeout:  cfg.ScannerTimeout,
+		fileName: cfg.FileName,
 	}
 }
 
@@ -98,19 +95,13 @@ func (l *LinkScanner) parseURLs(lines []string) []*link.ParsedURL {
 
 func (l *LinkScanner) doHealthCheck(parsedURLs []*link.ParsedURL) {
 	errorChan := make(chan error)
-	sem := semaphore.NewWeighted(int64(l.concurrentRequests))
 
 	for _, parsedURL := range parsedURLs {
-		if err := sem.Acquire(context.Background(), 1); err != nil {
-			log.Fatal("Unable to acquire semaphore")
-		}
-
 		go func(url string) {
 			cancellingCtx, cancel := context.WithCancel(context.Background())
 			time.AfterFunc(l.timeout, cancel)
 
 			errorChan <- link.CheckHealth(cancellingCtx, url)
-			sem.Release(1)
 		}(parsedURL.URL)
 	}
 

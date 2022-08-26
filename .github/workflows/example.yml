@@ -11,3 +11,5 @@ jobs:
       uses: actions/checkout@v3
     - name: Scan for broken links
       uses: enkeyz/linkcheck-action@main
+      with:
+        timeout: 10s

@@ -2,16 +2,14 @@ package config
 
 import (
 	"errors"
-	"strconv"
 	"time"
 
 	"github.com/sethvargo/go-githubactions"
 )
 
 type Config struct {
-	ScannerTimeout     time.Duration
-	ConcurrentRequests int
-	FileName           string
+	ScannerTimeout time.Duration
+	FileName       string
 }
 
 func NewFromInputs(action *githubactions.Action) (*Config, error) {
@@ -25,19 +23,8 @@ func NewFromInputs(action *githubactions.Action) (*Config, error) {
 		return nil, err
 	}
 
-	concRequestsStr := action.GetInput("concurrentRequests")
-	if concRequestsStr == "" {
-		return nil, errors.New("unable to get 'concurrentRequests' action input")
-	}
-
-	concRequests, err := strconv.Atoi(concRequestsStr)
-	if err != nil {
-		return nil, err
-	}
-
 	return &Config{
-		ScannerTimeout:     timeout,
-		ConcurrentRequests: concRequests,
-		FileName:           "README.md",
+		ScannerTimeout: timeout,
+		FileName:       "README.md",
 	}, nil
 }
