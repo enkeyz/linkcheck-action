@@ -14,7 +14,7 @@ func CheckHealth(ctx context.Context, url string) error {
 	req = req.WithContext(ctx)
 
 	res, err := http.DefaultClient.Do(req)
-	if err != nil && errors.Is(err, context.Canceled) {
+	if err != nil && !errors.Is(err, context.Canceled) {
 		return fmt.Errorf("checking link %s, got error %s", url, err)
 	} else if errors.Is(err, context.Canceled) {
 		return fmt.Errorf("checking link %s, timeout", url)
