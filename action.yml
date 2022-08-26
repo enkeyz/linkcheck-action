@@ -1,0 +1,7 @@
+name: Link check
+description: Checking README file for broken links
+author: Norbert Klar
+
+runs:
+  using: docker
+  image: Dockerfile
