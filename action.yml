@@ -2,6 +2,16 @@ name: Link check
 description: Checking README file for broken links
 author: Norbert Klar
 
+inputs:
+  concurrentRequests:
+    description: 'Maximum number of concurrently running health checks on links'
+    required: false
+    default: '30'
+  timeout:
+    description: 'Maximum time to wait for the webserver to answer, in seconds'
+    required: false
+    default: '10'
+
 runs:
   using: docker
   image: Dockerfile

@@ -1,13 +1,20 @@
 package main
 
 import (
-	"time"
+	"log"
 
 	"github.com/enkeyz/go-linkcheck/internal/linkscanner"
 	"github.com/enkeyz/go-linkcheck/pkg/config"
+	"github.com/sethvargo/go-githubactions"
 )
 
 func main() {
-	linkScanner := linkscanner.New(&config.Config{ScannerTimeout: 10 * time.Second, FileName: "README.md"})
+	action := githubactions.New()
+	cfg, err := config.NewFromInputs(action)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	linkScanner := linkscanner.New(cfg)
 	linkScanner.Scan()
 }
