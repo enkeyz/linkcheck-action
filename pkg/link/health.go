@@ -15,7 +15,8 @@ func CheckHealth(ctx context.Context, url string) error {
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return fmt.Errorf("checking link %s, got error %s", url, err)
-	} else if res.StatusCode != http.StatusOK {
+		// only check 404 for now
+	} else if res.StatusCode == http.StatusNotFound {
 		return fmt.Errorf("checking link %s, got status code %d", url, res.StatusCode)
 	}
 
