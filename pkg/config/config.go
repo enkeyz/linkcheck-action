@@ -1,6 +1,7 @@
 package config
 
 import (
+	"errors"
 	"strconv"
 	"time"
 
@@ -15,12 +16,20 @@ type Config struct {
 
 func NewFromInputs(action *githubactions.Action) (*Config, error) {
 	timeoutStr := action.GetInput("timeout")
+	if timeoutStr == "" {
+		return nil, errors.New("unable to get 'timeout' action input")
+	}
+
 	timeout, err := time.ParseDuration(timeoutStr)
 	if err != nil {
 		return nil, err
 	}
 
 	concRequestsStr := action.GetInput("concurrentRequests")
+	if concRequestsStr == "" {
+		return nil, errors.New("unable to get 'concurrentRequests' action input")
+	}
+
 	concRequests, err := strconv.Atoi(concRequestsStr)
 	if err != nil {
 		return nil, err
