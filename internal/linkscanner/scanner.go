@@ -47,6 +47,7 @@ func (l *LinkScanner) Scan() {
 	if len(parsedURLs) == 0 {
 		log.Fatalf("No links found in %s", l.fileName)
 	}
+	log.Printf("Found %d links", len(parsedURLs))
 
 	l.doHealthCheck(parsedURLs)
 }
