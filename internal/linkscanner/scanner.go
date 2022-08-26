@@ -12,12 +12,6 @@ import (
 	"github.com/enkeyz/go-linkcheck/pkg/link"
 )
 
-// check if README.md exists
-// read every line into a string slice
-// parse each line for title and link
-// TODO check if they valid urls
-// run health check on each url and log the result
-
 type LinkScanner struct {
 	timeout  time.Duration
 	fileName string
@@ -31,7 +25,6 @@ func New(cfg *config.Config) *LinkScanner {
 }
 
 func (l *LinkScanner) Scan() {
-
 	readme, err := l.openReadme()
 	if err != nil {
 		log.Fatal(err)
