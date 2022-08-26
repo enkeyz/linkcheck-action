@@ -3,6 +3,7 @@ package link
 import (
 	"fmt"
 	"regexp"
+	"strings"
 )
 
 // https://regex101.com/r/r2cJgD/4
@@ -20,6 +21,6 @@ func ParseURL(line string) (*ParsedURL, error) {
 
 	return &ParsedURL{
 		Title: matches[0][1],
-		URL:   matches[0][2],
+		URL:   strings.TrimSpace(matches[0][2]),
 	}, nil
 }
